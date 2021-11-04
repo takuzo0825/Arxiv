@@ -1,0 +1,57 @@
+%%% LuaLaTeX
+\usepackage{luatexja}
+% \usepackage{luatexja-fontspec}
+\usepackage[no-math,deluxe,expert,haranoaji]{luatexja-preset}
+%%% Symbol
+\usepackage{siunitx}
+\usepackage{accents}
+\usepackage[scr]{rsfso}
+\usepackage{bbm}
+%%% Figure
+\usepackage{graphicx}
+% \usepackage[dvipsnames]{xcolor}
+\usepackage{caption}
+\captionsetup{format=hang,justification=raggedright}
+\usepackage{subcaption}
+\captionsetup[sub]{
+    skip=0pt,subrefformat=simple,labelformat=simple,
+    justification=raggedright,singlelinecheck=false
+}
+\renewcommand\thesubfigure{\,(\alph{subfigure})}
+\usepackage{tikz}
+%%% Reference
+\usepackage{cleveref}
+\renewcommand{\cref}[1]{\hyperlink{#1}{\chyperref{#1}}}
+\usepackage[backend = biber,style = phys]{biblatex}
+\ExecuteBibliographyOptions{
+    sorting=none,articletitle=false,chaptertitle=false,
+    pageranges=false,maxnames=3,minnames=1,hyperref=auto,abbreviate=true,
+    date=year,arxiv=abs,isbn=false,url=false,doi=false,eprint=true,giveninits=true}
+\DefineBibliographyStrings{english}{%
+    andothers = {\em et\addabbrvspace al\adddot}
+}
+%%% Mathematics
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{cancel}
+%%% Physics
+\usepackage{physics}
+\usepackage{tensor}
+%%% Chemical
+\usepackage[version=3]{mhchem}
+%%% Link
+\usepackage{url}
+% \usepackage[unicode,hidelinks,pdfusetitle]{hyperref}
+%%% User Define
+\newcommand{\lket}[1]{\left. \! \left| #1 \right> \! \right>} % for Liouville kets
+\newcommand{\lbra}[1]{\left< \! \left<  #1 \right|\right.} % for Liouville bras
+\newcommand{\lbraket}[2]{\left< \! {\left< #1 \vphantom{#2} \right|
+    \left. #2 \vphantom{#1} \right>}\! \right>} % for Liouville brackets
+\newlength{\dhatheight}
+\newcommand{\hhat}[1]{%
+    \settoheight{\dhatheight}{\ensuremath{\hat{#1}}}%
+    \addtolength{\dhatheight}{-0.35ex}%
+    \hat{\vphantom{\rule{1pt}{\dhatheight}}%
+    \smash{\hat{#1}}}
+}

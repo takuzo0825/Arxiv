@@ -1,0 +1,298 @@
+\documentclass[
+    14pt,luatex,unicode,professionalfont,aspectratio=169,
+    xcolor=dvipsnames,
+    hyperref={unicode,hidelinks,pdfusetitle}
+]{beamer}
+\usefonttheme{professionalfonts}
+\usetheme{metropolis}
+\setbeamercovered{transparent=30}
+\setbeamertemplate{navigation symbols}{}
+\setbeamerfont{footline}{size=\LARGE}
+
+\input{../preamble.tex}
+
+\title{\normalsize Solving the quantum master equation of coupled harmonic oscillators with Lie algebra methods}
+
+\begin{document}
+\frame{\titlepage}
+\section{Introduction}
+\begin{frame}[t]{Hilbert space $\mathcal{H}$ and Liouville space $\mathfrak{L}$}
+    \begin{columns}[t]
+        \begin{column}{0.5\textwidth}
+            Hilbert space $\mathcal{H}$
+            \begin{itemize}
+                \item Density operator $\hat{\rho}$
+                \item Hamiltonian $\hat{\mathscr{H}}$
+                \item von Neumann equation :
+                    \begin{equation}
+                        \pdv{t}\hat{\rho} = -i[\hat{\mathscr{H}},\hat{\rho}]
+                        \label{eq:von Neumann equation in Hilbert space}
+                    \end{equation}
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \alert{Liouville space} $\mathfrak{L}$
+            \begin{itemize}
+                \item Superket $\lket{\rho}$
+                \item Liouvillian $\hhat{\mathscr{L}}$
+                \item von Neumann equation :
+                    \begin{equation}
+                        \pdv{t}\lket{\rho} = \hhat{\mathscr{L}}\lket{\rho}
+                    \end{equation}
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    $\Longrightarrow$ Eq. \eqref{eq:von Neumann equation in Hilbert space} as the problem in linear algebra.
+    \begin{equation*}
+        \vb*{x} = A\vb*{b}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{Quantum master equation}
+    Von Neumann equation : $\partial_t \lket{\rho} =  -i[\hat{\mathscr{H}},\hat{\rho}]$
+    \begin{description}\footnotesize
+        \item[$+$] Total Hamiltonian :
+                    $\hat{H}_T = \hat{H} + \hat{H}_E + \hat{H}_I$.
+        \item[$+$] Markovian interaction.
+        \item[$+$] Initial state is separable :
+                    $\hat{\rho}_T(0) \approx \hat{\rho}(0) \otimes \hat{\rho}_E(0)$.
+        \item[$+$] Born approximation :
+            $\hat{\rho}_T(t) \approx \hat{\rho}(t) \otimes \hat{\rho}_E(0)$.
+        \item[$+$] Weak coupled regime : $\hat{H}_I \ll \hat{H}, \hat{H}_E$.
+        \item[$+$] Rotating wave approximation.
+    \end{description}\normalsize
+    \alert{Quantum master equation}~\footfullcite{Manzano2020} :
+    {\small($\hat{\mathcal{L}}_i$ is Lindblad jump operator)}
+    \begin{equation}
+        \pdv{t}\hat{\rho}(t)
+        = -i[\hat{\mathscr{H}},\hat{\rho}] + \frac{1}{2}\sum_i \qty(
+                2\hat{\mathcal{L}}_i \hat{\rho}(t) \hat{\mathcal{L}}_i^\dag
+                    - \{\hat{\mathcal{L}}_i^\dag\hat{\mathcal{L}}_i,\hat{\rho}(t)\})
+    \end{equation}
+\end{frame}
+
+\begin{frame}{Lie algebra $\mathfrak{g}$ and Lie braket $[\cdot,\cdot]$}
+    \alert{Lie algebra} $\mathfrak{g}$ is vector space with \alert{Lie bracket} $[\cdot,\cdot]$.
+    \begin{itemize}
+        \item Alternativity : $[X,Y] = -[Y,X]$.
+        \item Linearity : $[aX+bY,Z] = a[X,Z] + b[Y,Z]$.
+        \item Jacobi identity : $[[X,Y],Z] + [[Y,Z],X] + [[Z,X],Y] = 0$.
+    \end{itemize}
+    ex) Commutator $[X,Y] \coloneqq XY - YX$.
+
+    Lie algebra is not commutative. \\
+    $\Longrightarrow$ Left translation and right transition :
+    \begin{equation}
+        \hhat{L}[\hat{O}]\lket{A} \coloneqq \hat{O}\hat{A}
+        \qc
+        \hhat{R}[\hat{O}]\lket{A} \coloneqq \hat{A}\hat{O}
+    \end{equation}
+\end{frame}
+
+\begin{frame}{A linear chain of $N$ coupled harmonic oscillators}
+    Hamiltonian :
+    \begin{equation}
+        \hat{\mathscr{H}}
+        = \sum_{k=1}^N \varepsilon_k \hat{a}_k^\dag \hat{a}_k
+            + \sum_{k=1}^{N-1} \kappa_k (\hat{a}_k^\dag\hat{a}_{k+1}
+                + \hat{a}_k\hat{a}_{k+1}^\dag)
+    \end{equation}
+    Quantum master equation :
+    \begin{equation}
+        \pdv{t}\hat{\rho}(t)
+        = -i[\hat{\mathscr{H}},\hat{\rho}]
+            + \sum_{k=1}^N \gamma_k (2\hat{a}_k\hat{\rho}\hat{a}_k^\dag
+                - \{\hat{a}_k^\dag\hat{a}_k,\hat{\rho}\})
+        \label{eq:quantum master equation for harmonic oscillators}
+    \end{equation}
+    where \quad\qquad $\hat{a}_k, \hat{a}_k^\dag$ is bosonic mode operators,
+    \begin{equation*}
+        \varepsilon_k : \text{energy}, \
+        \kappa_k : \text{coupling constant}, \
+        \gamma_k : \text{loss rate}
+    \end{equation*}
+\end{frame}
+
+\section{Induced Lie algebra}
+\begin{frame}{Effective non-Hermite Hamiltonian $\hat{\mathscr{H}}_\mathrm{eff}$}
+    \alert{Effective non-Hermite Hamiltonian} $\hat{\mathscr{H}}_\mathrm{eff}$ :
+    \begin{equation}
+        -i(\hat{\mathscr{H}}_\mathrm{eff}\hat{\rho}
+            - \hat{\rho}\hat{\mathscr{H}}_\mathrm{eff}^\dag)
+        \coloneqq -i[\hat{\mathscr{H}},\hat{\rho}]
+            - \sum_{k=1}^N \gamma_k \{\hat{a}_k^\dag\hat{a}_k,\hat{\rho}\}_+
+    \end{equation}
+    Eigenvalue (energy) :
+    \begin{equation}
+        \varepsilon_k \longrightarrow \varepsilon_k - i\gamma_k
+    \end{equation}
+\end{frame}
+
+\begin{frame}{Bosonic mode superoperators}
+    Bosonic mode superoperators :
+    \begin{align}
+        \hhat{L}_k^-\lket{A} &= \hat{a}_k\hat{A},
+            & \hhat{L}_k^+\lket{A} &= \hat{a}_k^\dag\hat{A}, \\
+        \hhat{R}_k^-\lket{A} &= \hat{A}\hat{a}_k,
+            & \hhat{R}_k^+\lket{A} &= \hat{A}\hat{a}_k^\dag.
+    \end{align}
+    As well as $[\hat{a}_j,\hat{a}_k^\dag]=\delta_{jk}$,
+    \begin{equation}
+        [\hhat{L}_i^-,\hhat{L}_j^+] = \delta_{ij},
+        \quad
+        [\hhat{R}_i^-,\hhat{R}_j^+] = \delta_{ij}.
+    \end{equation}
+    The set
+    \begin{equation}
+        \alt<2>{
+            \{\hhat{\mathbbm{1}}_\mathfrak{L},\hhat{L}_i^\pm,\hhat{R}_i^\pm,\hhat{\mathscr{L}}\}
+        }{
+            \{\hhat{\mathbbm{1}}_\mathfrak{L},\hhat{L}_i^\pm,\hhat{R}_i^\pm,\hhat{L}_j^+\hhat{L}_k^-,\hhat{R}_j^-\hhat{R}_k^+,\hhat{L}_j^-\hhat{R}_k^-\}
+        }
+    \end{equation}
+    spans Lie algebra $\mathfrak{g}$.
+\end{frame}
+
+\begin{frame}{Liouvillian $\hhat{\mathscr{L}}$ for harmonic oscillators}
+    Liouvillian (right action) :
+    \small
+    \begin{align}
+        \hhat{\mathscr{L}}
+        &= \sum_{k=1}^N \qty[(i\varepsilon_k - \gamma_k)\hhat{R}_k^+\hhat{R}_k^-
+                - (i\varepsilon_k + \gamma_k) \hhat{L}_k^+\hhat{L}_k^-
+                    + 2\gamma_k\hhat{L}_k^-\hhat{R}_k^-] \nonumber \\
+        &\qquad + \sum_{k=1}^N i\kappa_k \qty(\hhat{L}_k^+ \hhat{L}_{k+1}^-
+                + \hhat{L}_{k+1}^+\hhat{L}_k^- - \hhat{R}_{k+1}^+\hhat{R}_k^-
+                    - \hhat{R}_k^+\hhat{R}_{k+1}^-)
+    \end{align}
+    \normalsize
+    \alert{Time evolution superoperator} :
+    \begin{equation}
+        \pdv{t} \hhat{\mathcal{U}}(t) = \hhat{\mathscr{L}}\hhat{\mathcal{U}}(t)
+    \end{equation}
+    where $\hhat{\mathcal{U}}(0) = \hhat{\mathbbm{1}}_\mathfrak{L}$.
+\end{frame}
+
+\begin{frame}{Approaches to solve master equation}
+    Two approaches to solve master equation.
+    \begin{enumerate}
+        \item Eigendecomposition (time-independent)
+        \item Wei-Norman expansion (time-dependent)
+    \end{enumerate}
+\end{frame}
+
+\section{Eigendecomposition}
+\begin{frame}{Regular representation in Lie algebra}
+    Regular representation $\hhat{\mathcal{R}}(Z)$ :
+    \begin{equation}
+        [\hhat{Z},\hhat{X}_i] = \hhat{\mathcal{R}}_{ij}(\hhat{Z}) \hhat{X}_j.
+    \end{equation}
+    Interested in $\hhat{\mathcal{R}}(\hhat{\mathscr{L}})$,
+    \begin{equation}
+        \{\hhat{\mathbbm{1}}_\mathfrak{L},\hhat{L}_i^\pm,\hhat{R}_i^\pm,\hhat{\mathscr{L}}\}
+            \longrightarrow \{\hhat{L}_i^\pm,\hhat{R}_i^\pm\}
+    \end{equation}
+    Eigenvalues of $\hhat{\mathcal{R}}(\hhat{\mathscr{L}})$ :
+    \begin{equation}
+        \{\pm\lambda_1,\ldots,\pm\lambda_N,\pm\lambda_1^*,\ldots,\pm\lambda_N^*\}
+    \end{equation}
+    where $\lambda=(\lambda_1,\ldots,\lambda_N)$ are the eigenvalues of $\hhat{\mathscr{H}}_\mathrm{eff}$.
+\end{frame}
+
+\begin{frame}{Collective creation and annihilation operators}
+    Eigenvectors of $\hhat{\mathcal{R}}(\hhat{\mathscr{L}})$ :
+    \begin{align}
+        \hhat{P}_i^+ &= \sum_k c_{ik}(\hhat{L}_k^+ - \hhat{R}_k^-),
+            & \hhat{P}_i^- &= \sum_k c_{ik}\hhat{L}_k^-, \\
+        \hhat{Q}_i^+ &= \sum_k c_{ik}(\hhat{R}_k^+ - \hhat{L}_k^-),
+            & \hhat{Q}_i^- &= \sum_k c^*_{ik}\hhat{R}_k^-.
+    \end{align}
+    $\Longrightarrow$ Collective creation and annihilation operators :
+    \begin{gather}
+        [\hhat{P}_i^-,\hhat{P}_j^+] = \delta_{ij},
+        \quad
+        [\hhat{Q}_i^-,\hhat{Q}_j^+] = \delta_{ij} \\
+        \begin{aligned}
+            [\hhat{\mathcal{L}},\hhat{P}_i^+] &= \lambda_i\hhat{P}_i^+
+                & [\hhat{\mathcal{L}},\hhat{P}_i^-] &= -\lambda_i\hhat{P}_i^-  \\
+            [\hhat{\mathcal{L}},\hhat{Q}_i^+] &= \lambda_i^*\hhat{Q}_i^+
+                & [\hhat{\mathcal{L}},\hhat{Q}_i^-] &= -\lambda_i^*\hhat{Q}_i^-
+        \end{aligned}
+    \end{gather}
+\end{frame}
+
+\begin{frame}{Ground state and ladder state}
+    Ground state in $\mathfrak{L}$ :
+    \begin{gather}
+        \hhat{P}_i^-\lket{0} = \hhat{Q}_i^-\lket{0} = 0_\mathcal{H} \\
+        \hhat{P}_i^+ \lbra{0} = \hhat{Q}_i^+\lbra{0} = 0_\mathcal{H}
+    \end{gather}
+    Higher rungs of the ladder :
+    \begin{align}
+        \lket{\alpha,\beta} &= \frac{1}{\sqrt{\alpha!\beta!}}
+            \hhat{\vb*{P}}^{+\alpha} \hhat{\vb*{Q}}^{+\beta}\lket{0} \\
+        \lbra{\alpha,\beta} &= \frac{1}{\sqrt{\alpha!\beta!}}
+            \lbra{0}\!\hhat{\vb*{P}}^{+\alpha} \hhat{\vb*{Q}}^{+\beta}
+    \end{align}
+    where $\alpha=(\alpha_1,\ldots,\alpha_N), \beta=(\beta_1,\ldots,\beta_N)$.
+\end{frame}
+
+\begin{frame}{Collective creation and annihilation operators}
+    Baker–Campbell–Hausdorff formula :
+    \begin{equation}
+        e^{A}Be^{-A} = \sum_{n=0}^\infty\frac{1}{n!}
+            \underbrace{[A,[A,\cdots,[A}_{n},B]\cdots]]
+    \end{equation}
+
+    Ladder state :
+    \begin{equation}
+        e^{\mathscr{L}t} \lket{\alpha,\beta}
+            = e^{(\alpha\cdot\lambda + \beta\cdot\lambda^*)t}
+                \lket{\alpha,\beta}
+    \end{equation}
+
+    Density superket $\lket{\rho}$ evoluted as
+    \begin{equation}
+        \lket{\rho(t)} = \sum_{\alpha,\beta} e^{(\alpha\cdot\lambda + \beta\cdot\lambda^*)t}
+                        \lket{\alpha,\beta}\lbraket{\alpha,\beta}{\rho_0}.
+    \end{equation}
+\end{frame}
+
+\section{Wei-Norman expansion}
+\begin{frame}{Collective creation and annihilation operators}
+    Expansion of $\hhat{\mathscr{L}}$ by basis :
+    \begin{equation}
+        \hhat{\mathscr{L}}(t) = \sum_{k=1}^m c_k(t) \hhat{X}_k.
+    \end{equation}
+
+    Time evolution superoperator :
+    \begin{equation}
+        \hhat{\mathcal{U}}(t) = \prod_k^n \hhat{\mathcal{U}}_k(t)
+                              = \prod_k^n \exp g_k(t)\hhat{X}_k
+    \end{equation}
+    where
+    \begin{equation}
+        \pdv{t}\hhat{\mathcal{U}}_k(t) =  g_k(t)\hhat{X}_k \hhat{\mathcal{U}}_k(t)
+        \qc
+        \hhat{\mathcal{U}}_k(0) = \hhat{\mathbbm{1}}_\mathfrak{L}.
+    \end{equation}
+\end{frame}
+
+\begin{frame}{Collective creation and annihilation operators}
+    Liouvillian is split as :
+    \begin{equation}
+        \hhat{\mathscr{L}} = \underbrace{\hhat{\mathscr{L}}_S}_\text{solvable}
+                                + \underbrace{\hhat{\mathscr{L}}_R}_\text{remaining}
+    \end{equation}
+
+    Time evolution superoperator :
+    \begin{equation}
+        \pdv{t}\hhat{\mathcal{U}}_S(t) =  \hhat{\mathscr{L}}_S \hhat{\mathcal{U}}_S(t)
+        \qc
+        \pdv{t}\hhat{\mathcal{U}}_R(t)
+            =  (\hhat{\mathcal{U}}_S^{-1}\hhat{\mathscr{L}}_R\hhat{\mathcal{U}}_S)
+                \hhat{\mathcal{U}}_R(t)
+    \end{equation}
+    However, $\hhat{\mathcal{U}}_R(t)$ is not always solvable.
+\end{frame}
+\end{document}
